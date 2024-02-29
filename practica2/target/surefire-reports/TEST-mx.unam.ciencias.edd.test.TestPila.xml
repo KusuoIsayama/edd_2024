@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="7" failures="0" name="mx.unam.ciencias.edd.test.TestPila" time="0.034" errors="0" skipped="0">
+<testsuite tests="7" failures="0" name="mx.unam.ciencias.edd.test.TestPila" time="0.062" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.22+7"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk/lib"/>
-    <property name="maven.multiModuleProjectDirectory" value="/home/grauler/Descargas/eddd/practica2"/>
+    <property name="maven.multiModuleProjectDirectory" value="/home/grauler/Documentos/GIT/practica2"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="java.vendor.url" value="https://openjdk.java.net/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -14,7 +14,7 @@
     <property name="user.country" value="MX"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="/home/grauler/Descargas/eddd/practica2"/>
+    <property name="user.dir" value="/home/grauler/Documentos/GIT/practica2"/>
     <property name="java.vm.compressedOopsMode" value="32-bit"/>
     <property name="java.runtime.version" value="11.0.22+7"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
@@ -60,11 +60,11 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testEsVacia" time="0"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testMete" time="0"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testMira" time="0"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testSaca" time="0.01"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testToString" time="0.01"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testEquals" time="0.009"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testConstructor" time="0.005"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testEsVacia" time="0.005"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testMete" time="0.01"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testMira" time="0.009"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testSaca" time="0.002"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testToString" time="0.024"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testEquals" time="0.001"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testConstructor" time="0.011"/>
 </testsuite>
