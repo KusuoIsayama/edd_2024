@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="6" failures="0" name="mx.unam.ciencias.edd.test.TestArreglos" time="0.052" errors="0" skipped="0">
+<testsuite tests="6" failures="0" name="mx.unam.ciencias.edd.test.TestArreglos" time="0.036" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.22+7"/>
@@ -32,7 +32,7 @@
     <property name="java.class.version" value="55.0"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="os.version" value="6.7.6-arch1-1"/>
+    <property name="os.version" value="6.7.8-arch1-1"/>
     <property name="library.jansi.path" value="/opt/maven/lib/jansi-native"/>
     <property name="user.home" value="/home/grauler"/>
     <property name="user.timezone" value="America/Mexico_City"/>
@@ -60,10 +60,10 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testSelectionSort" time="0.025"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testQuickSortComparator" time="0.002"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testSelectionSortComparator" time="0.007"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testBusquedaBinaria" time="0.01"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testBusquedaBinariaCompartor" time="0.004"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testQuickSort" time="0.004"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testSelectionSort" time="0.016"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testQuickSortComparator" time="0.005"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testSelectionSortComparator" time="0.006"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testBusquedaBinaria" time="0.003"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testBusquedaBinariaCompartor" time="0.003"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestArreglos" name="testQuickSort" time="0.003"/>
 </testsuite>
