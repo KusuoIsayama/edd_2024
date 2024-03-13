@@ -11,6 +11,14 @@ public class Pila<T> extends MeteSaca<T> {
      */
     @Override public String toString() {
         // Aquí va su código.
+        String escribir = "";
+        Nodo nodo = cabeza;
+
+	while (nodo != null){
+	    escribir += nodo.elemento.toString() + "\n";
+	    nodo = nodo.siguiente;
+	}
+	return escribir;
     }
 
     /**
@@ -21,5 +29,14 @@ public class Pila<T> extends MeteSaca<T> {
      */
     @Override public void mete(T elemento) {
         // Aquí va su código.
+	if (elemento == null)
+	    throw new IllegalArgumentException ("No hay elementos");
+
+	Nodo n = new Nodo (elemento);
+	if (cabeza == null)
+	    cabeza = rabo = null;
+	
+	n.siguiente = cabeza;
+	cabeza = n;
     }
 }

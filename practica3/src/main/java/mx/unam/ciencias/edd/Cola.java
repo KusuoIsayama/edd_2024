@@ -11,7 +11,15 @@ public class Cola<T> extends MeteSaca<T> {
      */
     @Override public String toString() {
         // Aquí va su código.
-    }
+	String s = "";
+	Nodo nodo = cabeza;
+
+	while (nodo != null){
+	    s += nodo.elemento.toString() + ",";
+	    nodo = nodo.siguiente;
+	}
+	return s;
+  }
 
     /**
      * Agrega un elemento al final de la cola.
@@ -21,5 +29,18 @@ public class Cola<T> extends MeteSaca<T> {
      */
     @Override public void mete(T elemento) {
         // Aquí va su código.
+	
+	if (elemento == null)
+	    throw new IllegalArgumentException ("Elemento vacio");
+	
+    Nodo n = new Nodo(elemento);
+	
+	if (rabo == null)
+	    cabeza = rabo = n;
+
+	else {
+	    rabo.siguiente = n;
+		rabo = n;
     }
+  }
 }

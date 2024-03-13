@@ -1,0 +1,1413 @@
+diff --git a/src/main/java/mx/unam/ciencias/edd/ArbolBinario.java b/src/main/java/mx/unam/ciencias/edd/ArbolBinario.java
+index 27f393c..6b6d9ff 100644
+--- a/src/main/java/mx/unam/ciencias/edd/ArbolBinario.java
++++ b/src/main/java/mx/unam/ciencias/edd/ArbolBinario.java
+@@ -30,6 +30,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+          */
+         protected Vertice(T elemento) {
+             // Aquí va su código.
++            this.elemento = elemento;
+         }
+ 
+         /**
+@@ -39,6 +40,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+          */
+         @Override public boolean hayPadre() {
+             // Aquí va su código.
++            return padre != null;
+         }
+ 
+         /**
+@@ -48,6 +50,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+          */
+         @Override public boolean hayIzquierdo() {
+             // Aquí va su código.
++            return izquierdo != null;
+         }
+ 
+         /**
+@@ -57,6 +60,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+          */
+         @Override public boolean hayDerecho() {
+             // Aquí va su código.
++            return derecho != null;
+         }
+ 
+         /**
+@@ -66,6 +70,9 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+          */
+         @Override public VerticeArbolBinario<T> padre() {
+             // Aquí va su código.
++            if (padre == null)
++             throw new NoSuchElementException("No hay padre");
++            return padre;
+         }
+ 
+         /**
+@@ -75,6 +82,9 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+          */
+         @Override public VerticeArbolBinario<T> izquierdo() {
+             // Aquí va su código.
++            if (izquierdo == null)
++             throw new NoSuchElementException("No hay padre");
++            return izquierdo;
+         }
+ 
+         /**
+@@ -84,6 +94,9 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+          */
+         @Override public VerticeArbolBinario<T> derecho() {
+             // Aquí va su código.
++            if (derecho == null)
++             throw new NoSuchElementException("No hay padre");
++            return derecho;
+         }
+ 
+         /**
+@@ -92,6 +105,13 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+          */
+         @Override public int altura() {
+             // Aquí va su código.
++            return altura(this);
++        }
++        private int altura (Vertice vertice){
++            if (vertice == null)
++             return -1;
++            else
++            return 1 + Math.max(altura(vertice.izquierdo), altura(vertice.derecho));
+         }
+ 
+         /**
+@@ -100,6 +120,10 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+          */
+         @Override public int profundidad() {
+             // Aquí va su código.
++            if (padre == null)
++            return 0;
++            else
++            return 1 + padre.profundidad();
+         }
+ 
+         /**
+@@ -108,6 +132,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+          */
+         @Override public T get() {
+             // Aquí va su código.
++            return elemento;
+         }
+ 
+         /**
+@@ -125,6 +150,15 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+                 return false;
+             @SuppressWarnings("unchecked") Vertice vertice = (Vertice)objeto;
+             // Aquí va su código.
++            return equals(this, vertice);
++        }
++        private boolean equals(Vertice v1, Vertice v2){
++            if(v1 == null && v2 == null)
++             return true;
++            if(v1 == null || v2 == null)
++            return false;
++
++            return v1.elemento.equals(v2.elemento) && equals(v1.izquierdo, v2.izquierdo) && equals(v1.derecho, v2.derecho);
+         }
+ 
+         /**
+@@ -133,6 +167,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+          */
+         @Override public String toString() {
+             // Aquí va su código.
++            return elemento.toString();
+         }
+     }
+ 
+@@ -154,6 +189,8 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+      */
+     public ArbolBinario(Coleccion<T> coleccion) {
+         // Aquí va su código.
++        for (T e : coleccion)
++         agrega(e);
+     }
+ 
+     /**
+@@ -166,7 +203,8 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+      * @return un nuevo vértice con el elemento recibido dentro del mismo.
+      */
+     protected Vertice nuevoVertice(T elemento) {
+-        // Aquí va su código.
++        // Aquí va su código.}
++        return new Vertice(elemento);
+     }
+ 
+     /**
+@@ -176,6 +214,10 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+      */
+     public int altura() {
+         // Aquí va su código.
++        if (raiz == null)
++         return -1;
++        else
++        return raiz.altura();
+     }
+ 
+     /**
+@@ -184,6 +226,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+      */
+     @Override public int getElementos() {
+         // Aquí va su código.
++        return elementos;
+     }
+ 
+     /**
+@@ -194,6 +237,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+      */
+     @Override public boolean contiene(T elemento) {
+         // Aquí va su código.
++        return busca(elemento) != null;
+     }
+ 
+     /**
+@@ -205,6 +249,22 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+      */
+     public VerticeArbolBinario<T> busca(T elemento) {
+         // Aquí va su código.
++        return busca(elemento, raiz);
++    }
++    private VerticeArbolBinario<T> busca (T elemento, Vertice vertice){
++        if (vertice == null)
++        return null;
++
++        if (vertice.elemento.equals(elemento))
++        return vertice;
++
++        VerticeArbolBinario <T> verticeIzq = busca(elemento, vertice.izquierdo);
++        VerticeArbolBinario <T> verticeDer = busca(elemento, vertice.derecho);
++
++        if (verticeIzq != null)
++         return verticeIzq;
++
++        return verticeDer;
+     }
+ 
+     /**
+@@ -214,6 +274,10 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+      */
+     public VerticeArbolBinario<T> raiz() {
+         // Aquí va su código.
++        if (raiz == null)
++         throw new NoSuchElementException("No hay raiz");
++
++        return raiz;
+     }
+ 
+     /**
+@@ -223,6 +287,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+      */
+     @Override public boolean esVacia() {
+         // Aquí va su código.
++        return raiz == null;
+     }
+ 
+     /**
+@@ -230,6 +295,8 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+      */
+     @Override public void limpia() {
+         // Aquí va su código.
++        raiz = null;
++        elementos = 0;
+     }
+ 
+     /**
+@@ -243,7 +310,11 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+             return false;
+         @SuppressWarnings("unchecked")
+             ArbolBinario<T> arbol = (ArbolBinario<T>)objeto;
+-        // Aquí va su código.
++
++        if (raiz == null && arbol.raiz == null)
++            return true;
++
++        return raiz.equals(arbol.raiz);
+     }
+ 
+     /**
+@@ -251,7 +322,42 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+      * @return una representación en cadena del árbol.
+      */
+     @Override public String toString() {
+-        // Aquí va su código.
++        if (raiz == null)
++            return "";
++
++        return toString(raiz, 0, new boolean[altura() + 1]);
++    }
++
++    private String dibujaEspacios(int nivel, boolean[] arreglo) {
++        String s = "";
++
++        for (int i = 0; i <= nivel - 1; i++)
++            s += arreglo[i] ? "│  " : "   ";
++
++        return s;
++    }
++
++    private String toString(Vertice vertice, int nivel, boolean[] arreglo) {
++        String s = vertice.elemento.toString() + "\n";
++        arreglo[nivel] = true;
++
++        if (vertice.izquierdo != null && vertice.derecho != null) {
++            s += dibujaEspacios(nivel, arreglo) + "├─›";
++            s += toString(vertice.izquierdo, nivel + 1, arreglo);
++            s += dibujaEspacios(nivel, arreglo) + "└─»";
++            arreglo[nivel] = false;
++            s += toString(vertice.derecho, nivel + 1, arreglo);
++        } else if (vertice.izquierdo != null) {
++            s += dibujaEspacios(nivel, arreglo) + "└─›";
++            arreglo[nivel] = false;
++            s += toString(vertice.izquierdo, nivel + 1, arreglo);
++        } else if (vertice.derecho != null) {
++            s += dibujaEspacios(nivel, arreglo) + "└─»";
++            arreglo[nivel] = false;
++            s += toString(vertice.derecho, nivel + 1, arreglo);
++        }
++
++        return s;
+     }
+ 
+     /**
+@@ -266,4 +372,4 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
+     protected Vertice vertice(VerticeArbolBinario<T> vertice) {
+         return (Vertice)vertice;
+     }
+-}
++}
+\ No newline at end of file
+diff --git a/src/main/java/mx/unam/ciencias/edd/ArbolBinarioCompleto.java b/src/main/java/mx/unam/ciencias/edd/ArbolBinarioCompleto.java
+index 651a4da..01b642c 100644
+--- a/src/main/java/mx/unam/ciencias/edd/ArbolBinarioCompleto.java
++++ b/src/main/java/mx/unam/ciencias/edd/ArbolBinarioCompleto.java
+@@ -19,19 +19,29 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
+         /* Inicializa al iterador. */
+         private Iterador() {
+             // Aquí va su código.
++            cola = new Cola <Vertice>();
++            if (raiz != null)
++             cola.mete(raiz);
+         }
+ 
+         /* Nos dice si hay un elemento siguiente. */
+         @Override public boolean hasNext() {
+             // Aquí va su código.
+-        }
+-
++            return !cola.esVacia();
++}
+         /* Regresa el siguiente elemento en orden BFS. */
+         @Override public T next() {
+             // Aquí va su código.
++            Vertice vertice = cola.saca();
++
++            if (vertice.izquierdo != null)
++             cola.mete(vertice.izquierdo);
++            if (vertice.derecho != null)
++             cola.mete(vertice.derecho);
++
++            return vertice.elemento;
+         }
+     }
+-
+     /**
+      * Constructor sin parámetros. Para no perder el constructor sin parámetros
+      * de {@link ArbolBinario}.
+@@ -57,7 +67,39 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
+      */
+     @Override public void agrega(T elemento) {
+         // Aquí va su código.
++        if (elemento == null)
++         throw new IllegalArgumentException ("No valido");
++
++        Vertice nuevoVertice = nuevoVertice (elemento);
++        elementos ++;
++        if (raiz == null){
++         raiz = nuevoVertice;
++         return;
++      }
++         Vertice vertice = vertice(primervertice());
++         nuevoVertice.padre = vertice;
++
++         if (vertice.izquierdo == null)
++         vertice.izquierdo = nuevoVertice;
++         else
++         vertice.derecho = nuevoVertice;
++    }
++    private VerticeArbolBinario <T> primervertice() {
++    Cola <Vertice> cola = new Cola<Vertice>();
++    cola.mete(raiz);
++
++    Vertice vertice;
++
++    while (!cola.esVacia()){
++        vertice = cola.saca();
++        if (vertice.izquierdo == null || vertice.derecho ==  null)
++         return vertice;
++
++        cola.mete (vertice.izquierdo);
++        cola.mete(vertice.derecho);
+     }
++    return null;
++  }
+ 
+     /**
+      * Elimina un elemento del árbol. El elemento a eliminar cambia lugares con
+@@ -67,6 +109,42 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
+      */
+     @Override public void elimina(T elemento) {
+         // Aquí va su código.
++        Vertice vertice = vertice(busca(elemento));
++
++        if(vertice == null)
++            return;
++        elementos--;
++
++        if (elementos == 0){
++            raiz = null;
++            return;
++        }
++        Vertice ultimoVertice = vertice(ultimoAgregado());
++        vertice.elemento = ultimoVertice.elemento;
++
++        if(ultimoVertice.padre.izquierdo == ultimoVertice)
++           ultimoVertice.padre.izquierdo = null;
++        else
++        ultimoVertice.padre.derecho = null;
++    }
++    private VerticeArbolBinario <T> ultimoAgregado(){
++    Cola <Vertice> cola = new Cola<Vertice>();
++    cola.mete(raiz);
++
++    Vertice ultimoVertice = raiz;
++    Vertice verticeActual;
++
++    while (!cola.esVacia()){
++        verticeActual = cola.saca();
++        ultimoVertice = verticeActual;
++
++        if (verticeActual.izquierdo != null)
++        cola.mete (verticeActual.izquierdo);
++
++        if (verticeActual.derecho != null)
++        cola.mete(verticeActual.derecho);
++    }
++    return ultimoVertice;
+     }
+ 
+     /**
+@@ -76,6 +154,10 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
+      */
+     @Override public int altura() {
+         // Aquí va su código.
++        if (raiz == null)
++            return -1;
++            
++        return (int) Math.floor(Math.log(elementos) / Math.log (2));
+     }
+ 
+     /**
+@@ -85,6 +167,19 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
+      */
+     public void bfs(AccionVerticeArbolBinario<T> accion) {
+         // Aquí va su código.
++        Cola <Vertice> cola = new Cola<Vertice>();
++        cola.mete(raiz);
++
++        Vertice vertice;
++        while (!cola.esVacia()){
++            vertice = cola.saca();
++            accion.actua(vertice);
++
++            if (vertice.izquierdo != null)
++              cola.mete(vertice.izquierdo);
++            if (vertice.derecho != null)
++              cola.mete(vertice.derecho);
++        }
+     }
+ 
+     /**
+diff --git a/src/main/java/mx/unam/ciencias/edd/ArbolBinarioOrdenado.java b/src/main/java/mx/unam/ciencias/edd/ArbolBinarioOrdenado.java
+index e8685fa..f9d3540 100644
+--- a/src/main/java/mx/unam/ciencias/edd/ArbolBinarioOrdenado.java
++++ b/src/main/java/mx/unam/ciencias/edd/ArbolBinarioOrdenado.java
+@@ -26,21 +26,42 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+         /* Inicializa al iterador. */
+         private Iterador() {
+             // Aquí va su código.
++        pila = new Pila<Vertice>();
++            if (raiz == null)
++                return;
++
++            pila.mete(raiz);
++            Vertice vertice = raiz;
++
++            while ((vertice = vertice.izquierdo) != null)
++                pila.mete(vertice);
++
+         }
+ 
+         /* Nos dice si hay un elemento siguiente. */
+         @Override public boolean hasNext() {
+             // Aquí va su código.
++            return !pila.esVacia();
+         }
+ 
+         /* Regresa el siguiente elemento en orden DFS in-order. */
+         @Override public T next() {
+-            // Aquí va su código.
++            Vertice vertice = pila.saca();
++
++            if (vertice.derecho != null) {
++                Vertice verticeAux = vertice.derecho;
++                pila.mete(verticeAux);
++
++                while ((verticeAux = verticeAux.izquierdo) != null)
++                    pila.mete(verticeAux);
++            }
++
++            return vertice.elemento;
+         }
+     }
+ 
+     /**
+-     * El vértice del último elemento agegado. Este vértice sólo se puede
++     * El vértice del último elemento agregado. Este vértice sólo se puede
+      * garantizar que existe <em>inmediatamente</em> después de haber agregado
+      * un elemento al árbol. Si cualquier operación distinta a agregar sobre el
+      * árbol se ejecuta después de haber agregado un elemento, el estado de esta
+@@ -70,8 +91,40 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+      */
+     @Override public void agrega(T elemento) {
+         // Aquí va su código.
+-    }
++        if (elemento == null)
++            throw new IllegalArgumentException("Elemento no válido.");
++
++        Vertice vertice = nuevoVertice(elemento);
++
++        if (raiz == null)
++         raiz = vertice;
++        else
++        agrega(raiz, vertice);
+ 
++        ultimoAgregado = vertice;
++        elementos++;
++
++    }
++    private void agrega(Vertice verticeActual, Vertice nuevoVertice){
++        if (nuevoVertice.elemento.compareTo(verticeActual.elemento)<= 0){
++            if (verticeActual.izquierdo == null){
++                verticeActual.izquierdo = nuevoVertice;
++                nuevoVertice.padre = verticeActual;
++                }
++            else{
++                agrega(verticeActual.izquierdo, nuevoVertice);
++            }
++        }
++        else {
++            if(verticeActual.derecho == null){
++                verticeActual.derecho = nuevoVertice;
++                nuevoVertice.padre = verticeActual;
++                }
++            else{
++                agrega(verticeActual.derecho, nuevoVertice);
++            }
++        }
++    }
+     /**
+      * Elimina un elemento. Si el elemento no está en el árbol, no hace nada; si
+      * está varias veces, elimina el primero que encuentre (in-order). El árbol
+@@ -80,6 +133,18 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+      */
+     @Override public void elimina(T elemento) {
+         // Aquí va su código.
++        Vertice vertice = vertice(busca(elemento));
++
++        if (vertice == null)
++            return;
++
++        elementos--;
++
++        if (vertice.izquierdo != null && vertice.derecho != null)
++            vertice = intercambiaEliminable(vertice);
++
++        eliminaVertice(vertice);
++
+     }
+ 
+     /**
+@@ -93,6 +158,13 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+      */
+     protected Vertice intercambiaEliminable(Vertice vertice) {
+         // Aquí va su código.
++        Vertice verticeMaximal = maximoEnSubarbol(vertice.izquierdo);
++        T elementoMaximal = verticeMaximal.elemento;
++
++        verticeMaximal.elemento = vertice.elemento;
++        vertice.elemento = elementoMaximal;
++
++        return verticeMaximal;
+     }
+ 
+     /**
+@@ -102,7 +174,18 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+      *                distinto de <code>null</code>.
+      */
+     protected void eliminaVertice(Vertice vertice) {
+-        // Aquí va su código.
++        Vertice hijo = vertice.izquierdo != null ? vertice.izquierdo : vertice.derecho;
++
++        if (vertice.padre == null)
++            raiz = hijo;
++        else
++            if (vertice.padre.izquierdo == vertice)
++                vertice.padre.izquierdo = hijo;
++            else
++                vertice.padre.derecho = hijo;
++
++        if (hijo != null)
++            hijo.padre = vertice.padre;
+     }
+ 
+     /**
+@@ -114,6 +197,17 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+      */
+     @Override public VerticeArbolBinario<T> busca(T elemento) {
+         // Aquí va su código.
++        return busca(elemento, raiz);
++    }
++    private VerticeArbolBinario<T> busca(T elemento, Vertice vertice){
++        if(vertice == null)
++            return null;
++        if(vertice.elemento.equals(elemento))
++            return vertice;
++        if(elemento.compareTo(vertice.elemento) <= 0)
++            return busca(elemento, vertice.izquierdo);
++
++        return busca (elemento, vertice.derecho);
+     }
+ 
+     /**
+@@ -137,7 +231,30 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+      * @param vertice el vértice sobre el que vamos a girar.
+      */
+     public void giraDerecha(VerticeArbolBinario<T> vertice) {
+-        // Aquí va su código.
++        Vertice verticeActual = vertice(vertice);
++
++        if (verticeActual.izquierdo == null)
++            return;
++
++        Vertice hijo = verticeActual.izquierdo;
++        hijo.padre = verticeActual.padre;
++
++        if (verticeActual.padre == null)
++            raiz = hijo;
++        else {
++            if (verticeActual.padre.izquierdo == verticeActual)
++                verticeActual.padre.izquierdo = hijo;
++            else
++                verticeActual.padre.derecho = hijo;
++        }
++
++        verticeActual.izquierdo = hijo.derecho;
++
++        if (verticeActual.izquierdo != null)
++            verticeActual.izquierdo.padre = verticeActual;
++
++        hijo.derecho = verticeActual;
++        verticeActual.padre = hijo;
+     }
+ 
+     /**
+@@ -146,7 +263,29 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+      * @param vertice el vértice sobre el que vamos a girar.
+      */
+     public void giraIzquierda(VerticeArbolBinario<T> vertice) {
+-        // Aquí va su código.
++        Vertice verticeActual = vertice(vertice);
++
++        if (verticeActual.derecho == null)
++            return;
++
++        Vertice hijo = verticeActual.derecho;
++        hijo.padre = verticeActual.padre;
++
++        if (verticeActual.padre == null)
++            raiz = hijo;
++        else {
++            if (verticeActual.padre.derecho == verticeActual)
++                verticeActual.padre.derecho = hijo;
++            else
++                verticeActual.padre.izquierdo = hijo;
++        }
++
++        verticeActual.derecho = hijo.izquierdo;
++
++        if (verticeActual.derecho != null)
++            verticeActual.derecho.padre = verticeActual;
++        hijo.izquierdo = verticeActual;
++        verticeActual.padre = hijo;
+     }
+ 
+     /**
+@@ -156,6 +295,14 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+      */
+     public void dfsPreOrder(AccionVerticeArbolBinario<T> accion) {
+         // Aquí va su código.
++        dfsPreOrder(accion, raiz);
++    }
++    private void dfsPreOrder (AccionVerticeArbolBinario<T> accion, Vertice vertice){
++        if (vertice == null)
++            return;
++        accion.actua(vertice);
++        dfsPreOrder(accion, vertice.izquierdo);
++        dfsPreOrder(accion, vertice.derecho);
+     }
+ 
+     /**
+@@ -165,8 +312,15 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+      */
+     public void dfsInOrder(AccionVerticeArbolBinario<T> accion) {
+         // Aquí va su código.
++        dfsInOrder(accion, raiz);
++    }
++    private void dfsInOrder(AccionVerticeArbolBinario<T> accion, Vertice vertice) {
++        if (vertice == null)
++            return;
++        dfsInOrder(accion, vertice.izquierdo);
++        accion.actua(vertice);
++        dfsInOrder(accion, vertice.derecho);
+     }
+-
+     /**
+      * Realiza un recorrido DFS <em>post-order</em> en el árbol, ejecutando la
+      * acción recibida en cada elemento del árbol.
+@@ -174,6 +328,22 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+      */
+     public void dfsPostOrder(AccionVerticeArbolBinario<T> accion) {
+         // Aquí va su código.
++        dfsPostOrder(accion, raiz);
++    }
++    private void dfsPostOrder(AccionVerticeArbolBinario<T> accion, Vertice vertice){
++        if (vertice == null)
++            return;
++
++        dfsPostOrder(accion, vertice.izquierdo);
++        dfsPostOrder(accion, vertice.derecho);
++        accion.actua(vertice);
++
++    }
++    private Vertice maximoEnSubarbol(Vertice vertice) {
++        if (vertice.derecho == null)
++            return vertice;
++
++        return maximoEnSubarbol(vertice.derecho);
+     }
+ 
+     /**
+@@ -183,4 +353,4 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
+     @Override public Iterator<T> iterator() {
+         return new Iterador();
+     }
+-}
++}
+\ No newline at end of file
+diff --git a/src/main/java/mx/unam/ciencias/edd/Arreglos.java b/src/main/java/mx/unam/ciencias/edd/Arreglos.java
+index 641317c..fcc5c96 100644
+--- a/src/main/java/mx/unam/ciencias/edd/Arreglos.java
++++ b/src/main/java/mx/unam/ciencias/edd/Arreglos.java
+@@ -19,8 +19,30 @@ public class Arreglos {
+     public static <T> void
+     quickSort(T[] arreglo, Comparator<T> comparador) {
+         // Aquí va su código.
++	quickSort(arreglo, comparador, 0, arreglo.length-1);
+     }
+ 
++    private static <T> void quickSort (T [] arreglo, Comparator<T> comparador, int inicio, int fin){
++	if (fin <= inicio)
++	    return;
++	int i = inicio + 1;
++	int j = fin;
++	int result;
++	while (i < j)
++	    if ((result = comparador.compare(arreglo [i], arreglo [inicio])) > 0 && comparador.compare(arreglo [j], arreglo [inicio]) <= 0)
++		intercambia (arreglo, i++, j--);
++
++	    else if (result <= 0)
++		i++;
++	    else
++		j--;
++	if (comparador.compare(arreglo [i], arreglo [inicio]) > 0)
++	    i--;
++	intercambia (arreglo,inicio,i);
++	quickSort(arreglo, comparador, inicio, i - 1);
++	quickSort (arreglo, comparador, i+1,fin);
++    }
++	
+     /**
+      * Ordena el arreglo recibido usando QickSort.
+      * @param <T> tipo del que puede ser el arreglo.
+@@ -40,6 +62,14 @@ public class Arreglos {
+     public static <T> void
+     selectionSort(T[] arreglo, Comparator<T> comparador) {
+         // Aquí va su código.
++	for (int i = 0; i < arreglo.length -1; i++){
++	    int m = i;
++	    for (int j = i+1; j < arreglo.length; j++)
++		if (comparador.compare (arreglo [j], arreglo [m]) < 0)
++		    m = j;
++	    
++	    intercambia (arreglo, i, m);
++	}
+     }
+ 
+     /**
+@@ -64,6 +94,22 @@ public class Arreglos {
+     public static <T> int
+     busquedaBinaria(T[] arreglo, T elemento, Comparator<T> comparador) {
+         // Aquí va su código.
++	return busquedaBinaria(arreglo, elemento, comparador, 0, arreglo.length - 1);
++    }
++    private static <T> int busquedaBinaria (T [] arreglo, T elemento, Comparator <T> comparador, int a, int b){
++	if (b < a)
++	    return -1;
++	int m = ((b - a)/2) + a;
++	int e = comparador.compare (elemento, arreglo[m]);
++
++	if (e == 0)
++	    return m;
++	
++	else if (e < 0)
++	    return busquedaBinaria (arreglo, elemento, comparador, a, m - 1);
++	else {
++	    return busquedaBinaria (arreglo, elemento, comparador, m + 1, b);
++	}
+     }
+ 
+     /**
+@@ -78,4 +124,10 @@ public class Arreglos {
+     busquedaBinaria(T[] arreglo, T elemento) {
+         return busquedaBinaria(arreglo, elemento, (a, b) -> a.compareTo(b));
+     }
++    
++    private static  <T> void intercambia (T [] arreglo, int a, int b){
++	T t = arreglo[a];
++	arreglo[a] = arreglo[b];
++        arreglo[b] = t;
++    }  
+ }
+diff --git a/src/main/java/mx/unam/ciencias/edd/Cola.java b/src/main/java/mx/unam/ciencias/edd/Cola.java
+index 8ab59f9..4ec0a40 100644
+--- a/src/main/java/mx/unam/ciencias/edd/Cola.java
++++ b/src/main/java/mx/unam/ciencias/edd/Cola.java
+@@ -11,7 +11,15 @@ public class Cola<T> extends MeteSaca<T> {
+      */
+     @Override public String toString() {
+         // Aquí va su código.
+-    }
++	String s = "";
++	Nodo nodo = cabeza;
++
++	while (nodo != null){
++	    s += nodo.elemento.toString() + ",";
++	    nodo = nodo.siguiente;
++	}
++	return s;
++  }
+ 
+     /**
+      * Agrega un elemento al final de la cola.
+@@ -21,5 +29,18 @@ public class Cola<T> extends MeteSaca<T> {
+      */
+     @Override public void mete(T elemento) {
+         // Aquí va su código.
++	
++	if (elemento == null)
++	    throw new IllegalArgumentException ("Elemento vacio");
++	
++    Nodo n = new Nodo(elemento);
++	
++	if (rabo == null)
++	    cabeza = rabo = n;
++
++	else {
++	    rabo.siguiente = n;
++		rabo = n;
+     }
++  }
+ }
+diff --git a/src/main/java/mx/unam/ciencias/edd/Lista.java b/src/main/java/mx/unam/ciencias/edd/Lista.java
+index ace1fe8..26639b3 100644
+--- a/src/main/java/mx/unam/ciencias/edd/Lista.java
++++ b/src/main/java/mx/unam/ciencias/edd/Lista.java
+@@ -29,6 +29,7 @@ public class Lista<T> implements Coleccion<T> {
+         /* Construye un nodo con un elemento. */
+         private Nodo(T elemento) {
+             // Aquí va su código.
++	    this.elemento = elemento;
+         }
+     }
+ 
+@@ -42,36 +43,54 @@ public class Lista<T> implements Coleccion<T> {
+         /* Construye un nuevo iterador. */
+         private Iterador() {
+             // Aquí va su código.
++	    anterior = null;
++	    siguiente = cabeza;
+         }
+ 
+         /* Nos dice si hay un elemento siguiente. */
+         @Override public boolean hasNext() {
+             // Aquí va su código.
++	    return siguiente != null;
+         }
+ 
+         /* Nos da el elemento siguiente. */
+         @Override public T next() {
+             // Aquí va su código.
++	    if (!hasNext())
++		throw new NoSuchElementException ("No hay siguiente.");
++	    anterior = siguiente;
++	    siguiente = siguiente.siguiente;
++	    return anterior.elemento;
+         }
+ 
+         /* Nos dice si hay un elemento anterior. */
+         @Override public boolean hasPrevious() {
+             // Aquí va su código.
++	    return anterior != null; 
+         }
+ 
+         /* Nos da el elemento anterior. */
+         @Override public T previous() {
+             // Aquí va su código.
++	    if (!hasPrevious())
++		throw new NoSuchElementException ("No hay elemento");
++	    siguiente = anterior;
++	    anterior = anterior.anterior;
++	    return siguiente.elemento;
+         }
+ 
+         /* Mueve el iterador al inicio de la lista. */
+         @Override public void start() {
+             // Aquí va su código.
++	    siguiente = cabeza;
++	    anterior = null;
+         }
+ 
+         /* Mueve el iterador al final de la lista. */
+         @Override public void end() {
+             // Aquí va su código.
++	    siguiente = null;
++	    anterior = rabo;
+         }
+     }
+ 
+@@ -89,6 +108,7 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public int getLongitud() {
+         // Aquí va su código.
++	return longitud;
+     }
+ 
+     /**
+@@ -98,6 +118,7 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     @Override public int getElementos() {
+         // Aquí va su código.
++	return longitud;
+     }
+ 
+     /**
+@@ -107,6 +128,7 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     @Override public boolean esVacia() {
+         // Aquí va su código.
++        return cabeza == null;
+     }
+ 
+     /**
+@@ -119,6 +141,8 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     @Override public void agrega(T elemento) {
+         // Aquí va su código.
++        agregaFinal(elemento);
++
+     }
+ 
+     /**
+@@ -130,6 +154,20 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public void agregaFinal(T elemento) {
+         // Aquí va su código.
++        if (elemento == null)
++            throw new IllegalArgumentException ("elemento invalido");
++
++        Nodo nodo = new Nodo (elemento);
++        longitud++;
++
++        if (rabo == null){
++            cabeza = rabo = nodo;
++        }
++        else {
++        rabo.siguiente = nodo;
++        nodo.anterior = rabo;
++        rabo = nodo;
++        }
+     }
+ 
+     /**
+@@ -141,6 +179,20 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public void agregaInicio(T elemento) {
+         // Aquí va su código.
++        if (elemento == null)
++            throw new IllegalArgumentException ("elemento invalido");
++
++        Nodo nodo = new Nodo (elemento);
++        longitud++;
++
++        if (cabeza == null){
++            cabeza = rabo = nodo;
++        }
++        else {
++        cabeza.anterior = nodo;
++        nodo.siguiente = cabeza;
++        cabeza = nodo;
++        }
+     }
+ 
+     /**
+@@ -160,6 +212,26 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public void inserta(int i, T elemento) {
+         // Aquí va su código.
++        if (elemento == null)
++            throw new IllegalArgumentException ("Elemento vacio");
++
++        if ( i <= 0){
++            agregaInicio(elemento);
++            return;
++        }
++        if (i > longitud -1){
++            agregaFinal(elemento);
++            return;
++        }
++            Nodo nodo = new Nodo(elemento);
++            Nodo s = buscarNodo(i);
++            Nodo a = s.anterior;
++
++            nodo.anterior = a;
++            a.siguiente = nodo;
++            nodo.siguiente = s;
++            s.anterior = nodo;
++            longitud++;
+     }
+ 
+     /**
+@@ -169,6 +241,31 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     @Override public void elimina(T elemento) {
+         // Aquí va su código.
++        Nodo nodo = cabeza;
++
++        while (nodo!= null) {
++            if (nodo.elemento.equals(elemento)){
++               break;
++            }
++
++            nodo = nodo.siguiente;
++        }
++            if (nodo == null){
++                return;
++            }
++            if (nodo.anterior == null) {
++                cabeza = nodo.siguiente;
++            }
++            else {
++                nodo.anterior.siguiente = nodo.siguiente;
++            }
++            if (nodo.siguiente == null){
++                rabo = nodo.anterior;
++            }
++            else {
++                nodo.siguiente.anterior = nodo.anterior;
++            }
++            longitud--;
+     }
+ 
+     /**
+@@ -178,6 +275,19 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public T eliminaPrimero() {
+         // Aquí va su código.
++         if (cabeza == null){
++            throw new NoSuchElementException ("Lista Vacia");
++        }
++        T e = cabeza.elemento;
++        cabeza = cabeza.siguiente;
++        if (cabeza != null){
++            cabeza.anterior = null;
++        }
++        else {
++            rabo = null;
++        }
++        longitud--;
++        return e;
+     }
+ 
+     /**
+@@ -187,6 +297,21 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public T eliminaUltimo() {
+         // Aquí va su código.
++        if (rabo == null){
++            throw new NoSuchElementException ("Lista Vacia");
++        }
++
++       T t = rabo.elemento;
++        rabo = rabo.anterior;
++
++        if (rabo != null){
++            rabo.siguiente = null;
++        }
++        else {
++            cabeza = null;
++        }
++        longitud--;
++        return t;
+     }
+ 
+     /**
+@@ -197,6 +322,12 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     @Override public boolean contiene(T elemento) {
+         // Aquí va su código.
++        for (T e : this){
++            if (e.equals (elemento)){
++                return true;
++            }
++        }
++        return false;
+     }
+ 
+     /**
+@@ -205,6 +336,11 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public Lista<T> reversa() {
+         // Aquí va su código.
++        Lista <T> e = new Lista <T>();
++        for (T i : this){
++            e.agregaInicio(i);
++        }
++        return e;
+     }
+ 
+     /**
+@@ -214,6 +350,11 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public Lista<T> copia() {
+         // Aquí va su código.
++        Lista <T> e = new Lista <T> ();
++        for (T t : this){
++            e.agrega(t);
++        }
++        return e;
+     }
+ 
+     /**
+@@ -221,6 +362,9 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     @Override public void limpia() {
+         // Aquí va su código.
++        cabeza = null;
++        rabo = null;
++        longitud = 0;
+     }
+ 
+     /**
+@@ -230,6 +374,10 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public T getPrimero() {
+         // Aquí va su código.
++        if (cabeza == null){
++            throw new NoSuchElementException ("No hay elementos");
++        }
++        return cabeza.elemento;
+     }
+ 
+     /**
+@@ -239,6 +387,10 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public T getUltimo() {
+         // Aquí va su código.
++        if (rabo == null){
++            throw new NoSuchElementException ("No hay elementos");
++        }
++        return rabo.elemento;
+     }
+ 
+     /**
+@@ -250,6 +402,10 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public T get(int i) {
+         // Aquí va su código.
++        if (i < 0 || i >= longitud){
++            throw new ExcepcionIndiceInvalido ("No valido");
++        }
++        return buscarNodo(i).elemento;
+     }
+ 
+     /**
+@@ -260,6 +416,18 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public int indiceDe(T elemento) {
+         // Aquí va su código.
++        int contador = 0;
++        Nodo nodo = cabeza;
++
++        while (nodo != null){
++
++            if (nodo.elemento.equals(elemento)){
++                return contador;
++            }
++            nodo = nodo.siguiente;
++            contador++;
++        }
++        return -1;
+     }
+ 
+     /**
+@@ -268,6 +436,19 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     @Override public String toString() {
+         // Aquí va su código.
++        Nodo nodo = cabeza;
++         String escribir = "[";
++
++         if (nodo != null){
++            while (nodo.siguiente != null){
++                escribir += String.format("%s, ", nodo.elemento);
++                nodo = nodo.siguiente;
++            }
++            escribir += String.format("%s", nodo.elemento);
++         }
++
++         escribir += "]";
++         return escribir;
+     }
+ 
+     /**
+@@ -281,6 +462,23 @@ public class Lista<T> implements Coleccion<T> {
+             return false;
+         @SuppressWarnings("unchecked") Lista<T> lista = (Lista<T>)objeto;
+         // Aquí va su código.
++        if (longitud != lista.longitud)
++            return false;
++        
++
++        Nodo nodo1 = cabeza;
++        Nodo nodo2 = lista.cabeza;
++        while (nodo1 != null){
++
++            if( (!nodo1.elemento.equals(nodo2.elemento)))
++                return false;
++            
++            
++                nodo1 = nodo1.siguiente;
++                nodo2 = nodo2.siguiente;
++            
++        }
++        return true;
+     }
+ 
+     /**
+@@ -309,6 +507,38 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public Lista<T> mergeSort(Comparator<T> comparador) {
+         // Aquí va su código.
++	if (longitud <= 1)
++	    return copia();
++	
++	int mitad = longitud / 2;
++	
++	Lista <T> Primera = Mezcla(0, mitad).mergeSort (comparador);
++	Lista <T> Segunda = Mezcla(mitad, longitud).mergeSort (comparador);
++	
++	Lista <T> Final = new Lista <T> ();
++	Nodo n1 = Primera.cabeza;
++	Nodo n2 = Segunda.cabeza;
++	
++	while (n1 != null && n2 != null){
++	    if (comparador.compare(n1.elemento, n2.elemento) <= 0){
++		Final.agregaFinal(n1.elemento);
++	    n1 = n1.siguiente;
++	    }
++	    else {
++		Final.agregaFinal(n2.elemento);
++		n2 = n2.siguiente;
++	    }
++	}
++	while (n1 != null){
++	    Final.agregaFinal(n1.elemento);
++	    n1 = n1.siguiente;
++	}
++	while (n2 != null){
++	    Final.agregaFinal(n2.elemento);
++	    n2 = n2.siguiente;
++	}
++	
++	return Final;
+     }
+ 
+     /**
+@@ -334,7 +564,14 @@ public class Lista<T> implements Coleccion<T> {
+      */
+     public boolean busquedaLineal(T elemento, Comparator<T> comparador) {
+         // Aquí va su código.
++	Nodo nodo = cabeza;
++    int e = -1;
++
++    while (nodo != null && (e = comparador.compare(nodo.elemento, elemento)) < 0){
++        nodo = nodo.siguiente;
+     }
++    return nodo != null && e == 0;
++  }
+ 
+     /**
+      * Busca un elemento en una lista ordenada. La lista recibida tiene que
+@@ -350,4 +587,23 @@ public class Lista<T> implements Coleccion<T> {
+     boolean busquedaLineal(Lista<T> lista, T elemento) {
+         return lista.busquedaLineal(elemento, (a, b) -> a.compareTo(b));
+     }
++    private Nodo buscarNodo (int i){
++        int auxiliar = 0;
++        Nodo nodo = cabeza;
++
++        while (auxiliar++ != i){
++            nodo = nodo.siguiente;
++        }
++        return nodo;
++    }
++    private  Lista <T> Mezcla (int a, int b){
++	Lista <T> l = new Lista <T> ();
++	Nodo nodo = buscarNodo(a);
++	
++	while (nodo != null && a++ < b){
++	    l.agregaFinal(nodo.elemento);
++	    nodo = nodo.siguiente;
++	}
++	return l;
++    }
+ }
+diff --git a/src/main/java/mx/unam/ciencias/edd/MeteSaca.java b/src/main/java/mx/unam/ciencias/edd/MeteSaca.java
+index 8864077..3ec0f8f 100644
+--- a/src/main/java/mx/unam/ciencias/edd/MeteSaca.java
++++ b/src/main/java/mx/unam/ciencias/edd/MeteSaca.java
+@@ -23,6 +23,7 @@ public abstract class MeteSaca<T> {
+          */
+         public Nodo(T elemento) {
+             // Aquí va su código.
++	    this.elemento = elemento;
+         }
+     }
+ 
+@@ -44,6 +45,18 @@ public abstract class MeteSaca<T> {
+      */
+     public T saca() {
+         // Aquí va su código.
++	if (cabeza == null)
++	    throw new NoSuchElementException ("Estructura vacia");
++    
++	T meter = cabeza.elemento;
++
++	if(cabeza == rabo)
++	    cabeza = rabo = null;
++    else 
++        cabeza = cabeza.siguiente;
++	
++	return meter;
++	
+     }
+ 
+     /**
+@@ -54,6 +67,10 @@ public abstract class MeteSaca<T> {
+      */
+     public T mira() {
+         // Aquí va su código.
++	if (cabeza == null)
++	    throw new NoSuchElementException ("La estructura es vacia");
++    	return cabeza.elemento;
++
+     }
+ 
+     /**
+@@ -63,6 +80,7 @@ public abstract class MeteSaca<T> {
+      */
+     public boolean esVacia() {
+         // Aquí va su código.
++        return cabeza == null;
+     }
+ 
+     /**
+@@ -77,5 +95,18 @@ public abstract class MeteSaca<T> {
+             return false;
+         @SuppressWarnings("unchecked") MeteSaca<T> m = (MeteSaca<T>)object;
+         // Aquí va su código.
++
++        Nodo nodo1 = cabeza;
++        Nodo nodo2 = m.cabeza;
++        while (nodo1 != null){
++
++            if (nodo2 == null || !nodo1.elemento.equals(nodo2.elemento))
++                return false;
++            
++                nodo1 = nodo1.siguiente;
++                nodo2 = nodo2.siguiente;
++            
++        }
++        return true;
+     }
+ }
+diff --git a/src/main/java/mx/unam/ciencias/edd/Pila.java b/src/main/java/mx/unam/ciencias/edd/Pila.java
+index fc800e7..618b205 100644
+--- a/src/main/java/mx/unam/ciencias/edd/Pila.java
++++ b/src/main/java/mx/unam/ciencias/edd/Pila.java
+@@ -11,6 +11,14 @@ public class Pila<T> extends MeteSaca<T> {
+      */
+     @Override public String toString() {
+         // Aquí va su código.
++        String escribir = "";
++        Nodo nodo = cabeza;
++
++	while (nodo != null){
++	    escribir += nodo.elemento.toString() + "\n";
++	    nodo = nodo.siguiente;
++	}
++	return escribir;
+     }
+ 
+     /**
+@@ -21,5 +29,14 @@ public class Pila<T> extends MeteSaca<T> {
+      */
+     @Override public void mete(T elemento) {
+         // Aquí va su código.
++	if (elemento == null)
++	    throw new IllegalArgumentException ("No hay elementos");
++
++	Nodo n = new Nodo (elemento);
++	if (cabeza == null)
++	    cabeza = rabo = null;
++	
++	n.siguiente = cabeza;
++	cabeza = n;
+     }
+ }

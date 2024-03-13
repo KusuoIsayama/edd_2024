@@ -19,19 +19,29 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
         /* Inicializa al iterador. */
         private Iterador() {
             // Aquí va su código.
+            cola = new Cola <Vertice>();
+            if (raiz != null)
+             cola.mete(raiz);
         }
 
         /* Nos dice si hay un elemento siguiente. */
         @Override public boolean hasNext() {
             // Aquí va su código.
-        }
-
+            return !cola.esVacia();
+}
         /* Regresa el siguiente elemento en orden BFS. */
         @Override public T next() {
             // Aquí va su código.
+            Vertice vertice = cola.saca();
+
+            if (vertice.izquierdo != null)
+             cola.mete(vertice.izquierdo);
+            if (vertice.derecho != null)
+             cola.mete(vertice.derecho);
+
+            return vertice.elemento;
         }
     }
-
     /**
      * Constructor sin parámetros. Para no perder el constructor sin parámetros
      * de {@link ArbolBinario}.
@@ -57,7 +67,39 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
      */
     @Override public void agrega(T elemento) {
         // Aquí va su código.
+        if (elemento == null)
+         throw new IllegalArgumentException ("No valido");
+
+        Vertice nuevoVertice = nuevoVertice (elemento);
+        elementos ++;
+        if (raiz == null){
+         raiz = nuevoVertice;
+         return;
+      }
+         Vertice vertice = vertice(primervertice());
+         nuevoVertice.padre = vertice;
+
+         if (vertice.izquierdo == null)
+         vertice.izquierdo = nuevoVertice;
+         else
+         vertice.derecho = nuevoVertice;
     }
+    private VerticeArbolBinario <T> primervertice() {
+    Cola <Vertice> cola = new Cola<Vertice>();
+    cola.mete(raiz);
+
+    Vertice vertice;
+
+    while (!cola.esVacia()){
+        vertice = cola.saca();
+        if (vertice.izquierdo == null || vertice.derecho ==  null)
+         return vertice;
+
+        cola.mete (vertice.izquierdo);
+        cola.mete(vertice.derecho);
+    }
+    return null;
+  }
 
     /**
      * Elimina un elemento del árbol. El elemento a eliminar cambia lugares con
@@ -67,6 +109,42 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
      */
     @Override public void elimina(T elemento) {
         // Aquí va su código.
+        Vertice vertice = vertice(busca(elemento));
+
+        if(vertice == null)
+            return;
+        elementos--;
+
+        if (elementos == 0){
+            raiz = null;
+            return;
+        }
+        Vertice ultimoVertice = vertice(ultimoAgregado());
+        vertice.elemento = ultimoVertice.elemento;
+
+        if(ultimoVertice.padre.izquierdo == ultimoVertice)
+           ultimoVertice.padre.izquierdo = null;
+        else
+        ultimoVertice.padre.derecho = null;
+    }
+    private VerticeArbolBinario <T> ultimoAgregado(){
+    Cola <Vertice> cola = new Cola<Vertice>();
+    cola.mete(raiz);
+
+    Vertice ultimoVertice = raiz;
+    Vertice verticeActual;
+
+    while (!cola.esVacia()){
+        verticeActual = cola.saca();
+        ultimoVertice = verticeActual;
+
+        if (verticeActual.izquierdo != null)
+        cola.mete (verticeActual.izquierdo);
+
+        if (verticeActual.derecho != null)
+        cola.mete(verticeActual.derecho);
+    }
+    return ultimoVertice;
     }
 
     /**
@@ -76,6 +154,10 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
      */
     @Override public int altura() {
         // Aquí va su código.
+        if (raiz == null)
+            return -1;
+            
+        return (int) Math.floor(Math.log(elementos) / Math.log (2));
     }
 
     /**
@@ -85,6 +167,19 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
      */
     public void bfs(AccionVerticeArbolBinario<T> accion) {
         // Aquí va su código.
+        Cola <Vertice> cola = new Cola<Vertice>();
+        cola.mete(raiz);
+
+        Vertice vertice;
+        while (!cola.esVacia()){
+            vertice = cola.saca();
+            accion.actua(vertice);
+
+            if (vertice.izquierdo != null)
+              cola.mete(vertice.izquierdo);
+            if (vertice.derecho != null)
+              cola.mete(vertice.derecho);
+        }
     }
 
     /**
