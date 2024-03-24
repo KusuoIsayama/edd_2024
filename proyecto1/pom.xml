@@ -4,18 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>mx.unam.ciencias.edd</groupId>
+  <groupId>mx.unam.ciencias.edd.proyecto1</groupId>
   <artifactId>proyecto</artifactId>
   <version>EDD</version>
   <packaging>jar</packaging>
 
   <name>Proyecto 1</name>
   <description>
-    Proyecto 1 de Estructuras de Datos: Ordenador lexicografico.
+    Proyecto1 de Estructuras de Datos: Ordenador lexicografico.
   </description>
-  <url>https://aztlan.fciencias.unam.mx/gitlab/2024-2-edd/curso/-/wikis/Proyectos/Proyecto%201</url>
+  <url>https://aztlan.fciencias.unam.mx/gitlab/2024-2-edd/practica2</url>
   <organization>
-    <name>Canek Peláez Valdés</name>
+    <name>Gael Arturo León García</name>
     <url>https://aztlan.fciencias.unam.mx/~canek/</url>
   </organization>
 
@@ -69,7 +69,7 @@
 	<configuration>
 	  <archive>
 	    <manifest>
-	      <mainClass>mx.unam.ciencias.edd.Practica2</mainClass>
+	      <mainClass>mx.unam.ciencias.edd.proyecto1.Proyecto1</mainClass>
 	    </manifest>
 	  </archive>
 	</configuration>
