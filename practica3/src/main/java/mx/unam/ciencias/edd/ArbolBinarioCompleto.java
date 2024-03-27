@@ -17,31 +17,32 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
         private Cola<Vertice> cola;
 
         /* Inicializa al iterador. */
-        private Iterador() {
-            // Aquí va su código.
-            cola = new Cola <Vertice>();
+        public Iterador() {
+            cola = new Cola<Vertice>();
+
             if (raiz != null)
-             cola.mete(raiz);
+                cola.mete(raiz);
         }
 
         /* Nos dice si hay un elemento siguiente. */
         @Override public boolean hasNext() {
-            // Aquí va su código.
             return !cola.esVacia();
-}
+        }
+
         /* Regresa el siguiente elemento en orden BFS. */
         @Override public T next() {
-            // Aquí va su código.
             Vertice vertice = cola.saca();
 
             if (vertice.izquierdo != null)
-             cola.mete(vertice.izquierdo);
+                cola.mete(vertice.izquierdo);
+
             if (vertice.derecho != null)
-             cola.mete(vertice.derecho);
+                cola.mete(vertice.derecho);
 
             return vertice.elemento;
         }
     }
+
     /**
      * Constructor sin parámetros. Para no perder el constructor sin parámetros
      * de {@link ArbolBinario}.
@@ -66,40 +67,86 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
      *         <code>null</code>.
      */
     @Override public void agrega(T elemento) {
-        // Aquí va su código.
         if (elemento == null)
-         throw new IllegalArgumentException ("No valido");
+            throw new IllegalArgumentException("Elemento no válido.");
 
-        Vertice nuevoVertice = nuevoVertice (elemento);
-        elementos ++;
-        if (raiz == null){
-         raiz = nuevoVertice;
-         return;
-      }
-         Vertice vertice = vertice(primervertice());
-         nuevoVertice.padre = vertice;
+        Vertice nuevoVertice = nuevoVertice(elemento);
+        elementos++;
 
-         if (vertice.izquierdo == null)
-         vertice.izquierdo = nuevoVertice;
-         else
-         vertice.derecho = nuevoVertice;
+        if (raiz == null) {
+            raiz = nuevoVertice;
+            return;
+        }
+
+        // Vertice vertice = vertice(primerVerticeConHoyo());
+        Vertice vertice = vertice(primerVerticeConHoyoLog());
+        nuevoVertice.padre = vertice;
+
+        if (vertice.izquierdo == null)
+            vertice.izquierdo = nuevoVertice;
+        else
+            vertice.derecho = nuevoVertice;
     }
-    private VerticeArbolBinario <T> primervertice() {
-    Cola <Vertice> cola = new Cola<Vertice>();
-    cola.mete(raiz);
 
-    Vertice vertice;
+    /**
+     * Obtiene el primer vertice que tiene un "hoyo" (según el orden BFS). Es
+     * decir, el primer vértice que no tiene hijo izquierdo o hijo derecho, por
+     * lo que debe ser padre del siguiente vértice a agregar en un árbol
+     * binario completo.
+     * La complejidad en tiempo de este algoritmo es O(n) pues utiliza BFS para
+     * recorrer todos los nodos hasta encontrar uno que cumpla las condiciones.
+     * @return el primer vértice con hoyo.
+     */
+    private VerticeArbolBinario<T> primerVerticeConHoyo() {
+        Cola<Vertice> cola = new Cola<Vertice>();
+        cola.mete(raiz);
 
-    while (!cola.esVacia()){
-        vertice = cola.saca();
-        if (vertice.izquierdo == null || vertice.derecho ==  null)
-         return vertice;
+        Vertice vertice;
+        while(!cola.esVacia()) {
+            vertice = cola.saca();
 
-        cola.mete (vertice.izquierdo);
-        cola.mete(vertice.derecho);
+            if (vertice.izquierdo == null || vertice.derecho == null)
+                return vertice;
+
+            cola.mete(vertice.izquierdo);
+            cola.mete(vertice.derecho);
+        }
+
+        return null;
     }
-    return null;
-  }
+
+    /**
+     * Obtiene el primer vertice que tiene un "hoyo". Es decir, el primer
+     * vértice que no tiene hijo izquierdo o hijo derecho, por lo que debe ser
+     * padre del siguiente vértice a agregar en un árbol binario completo.
+     * La complejidad en tiempo de este algoritmo es O(log_2(n)) pues utiliza
+     * el número de elementos para determinar el padre del que será el
+     * siguiente elemento en ser añadido.
+     * No utiliza multiplicaciones, divisiones ni métodos de la clase Math,
+     * únicamente como ejercicio.
+     * @return el primer vértice con hoyo.
+     */
+    private VerticeArbolBinario<T> primerVerticeConHoyoLog() {
+        Pila<Boolean> recorrido = new Pila<>();
+        Vertice vertice, temp;
+        vertice = temp = raiz;
+        int aux = elementos;
+
+        while (aux > 1) {
+            // n & 1 es equivalente a n % 2.
+            recorrido.mete((aux & 1) == 0);
+            // Desplazar una posición a la derecha es equivalente a dividir
+            // entre 2 en binario.
+            aux >>= 1;
+        }
+
+        while (temp != null) {
+            vertice = temp;
+            temp = recorrido.saca() ? temp.izquierdo : temp.derecho;
+        }
+
+        return vertice;
+    }
 
     /**
      * Elimina un elemento del árbol. El elemento a eliminar cambia lugares con
@@ -108,43 +155,52 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
      * @param elemento el elemento a eliminar.
      */
     @Override public void elimina(T elemento) {
-        // Aquí va su código.
         Vertice vertice = vertice(busca(elemento));
 
-        if(vertice == null)
+        if (vertice == null)
             return;
+
         elementos--;
 
-        if (elementos == 0){
+        if (elementos == 0) {
             raiz = null;
             return;
         }
-        Vertice ultimoVertice = vertice(ultimoAgregado());
+
+        Vertice ultimoVertice = vertice(ultimoVerticeAgregado());
         vertice.elemento = ultimoVertice.elemento;
 
-        if(ultimoVertice.padre.izquierdo == ultimoVertice)
-           ultimoVertice.padre.izquierdo = null;
+        if (ultimoVertice.padre.izquierdo == ultimoVertice)
+            ultimoVertice.padre.izquierdo = null;
         else
-        ultimoVertice.padre.derecho = null;
+            ultimoVertice.padre.derecho = null;
     }
-    private VerticeArbolBinario <T> ultimoAgregado(){
-    Cola <Vertice> cola = new Cola<Vertice>();
-    cola.mete(raiz);
 
-    Vertice ultimoVertice = raiz;
-    Vertice verticeActual;
+    /**
+     * Obtiene el último vértice que ha sido agregado al arbol binario
+     * completo, utilizando la técnica BFS para visitar todos los vértices y
+     * luego, regresar el que se encuentra al final de la cola.
+     * Por lo anterior, la complejidad en tiempo es O(n).
+     * @return el último vértice agregado.
+     */
+    private VerticeArbolBinario<T> ultimoVerticeAgregado() {
+        Cola<Vertice> cola = new Cola<Vertice>();
+        cola.mete(raiz);
+        Vertice ultimoVertice = raiz;
+        Vertice verticeActual;
 
-    while (!cola.esVacia()){
-        verticeActual = cola.saca();
-        ultimoVertice = verticeActual;
+        while (!cola.esVacia()) {
+            verticeActual = cola.saca();
+            ultimoVertice = verticeActual;
 
-        if (verticeActual.izquierdo != null)
-        cola.mete (verticeActual.izquierdo);
+            if (verticeActual.izquierdo != null)
+                cola.mete(verticeActual.izquierdo);
 
-        if (verticeActual.derecho != null)
-        cola.mete(verticeActual.derecho);
-    }
-    return ultimoVertice;
+            if (verticeActual.derecho != null)
+                cola.mete(verticeActual.derecho);
+        }
+
+        return ultimoVertice;
     }
 
     /**
@@ -153,11 +209,30 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
      * @return la altura del árbol.
      */
     @Override public int altura() {
-        // Aquí va su código.
-        if (raiz == null)
+        if (elementos == 0)
             return -1;
-            
-        return (int) Math.floor(Math.log(elementos) / Math.log (2));
+
+        return (int) Math.floor(Math.log(elementos) / Math.log(2));
+        // return alturaBitwise();
+    }
+
+    /**
+     * Regresa la altura del árbol binario completo, utilizando únicamente
+     * operaciones bitwise.
+     * Únicamente como ejercicio.
+     * @return la altura del árbol.
+     */
+    private int alturaBitwise() {
+        int numElementos = elementos;
+        int altura = -1;
+        while (numElementos > 0) {
+            // Desplazar una posición a la derecha es equivalente a dividir
+            // entre dos en binario.
+            numElementos >>= 1;
+            altura++;
+        }
+
+        return altura;
     }
 
     /**
@@ -166,19 +241,22 @@ public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
      * @param accion la acción a realizar en cada elemento del árbol.
      */
     public void bfs(AccionVerticeArbolBinario<T> accion) {
-        // Aquí va su código.
-        Cola <Vertice> cola = new Cola<Vertice>();
+        if (raiz == null)
+            return;
+
+        Cola<Vertice> cola = new Cola<Vertice>();
         cola.mete(raiz);
 
         Vertice vertice;
-        while (!cola.esVacia()){
+        while (!cola.esVacia()) {
             vertice = cola.saca();
             accion.actua(vertice);
 
             if (vertice.izquierdo != null)
-              cola.mete(vertice.izquierdo);
+                cola.mete(vertice.izquierdo);
+
             if (vertice.derecho != null)
-              cola.mete(vertice.derecho);
+                cola.mete(vertice.derecho);
         }
     }
 
