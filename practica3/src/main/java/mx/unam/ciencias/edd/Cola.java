@@ -40,7 +40,7 @@ public class Cola<T> extends MeteSaca<T> {
 
 	else {
 	    rabo.siguiente = n;
-		rabo = n;
+    	rabo = n;
     }
   }
 }
