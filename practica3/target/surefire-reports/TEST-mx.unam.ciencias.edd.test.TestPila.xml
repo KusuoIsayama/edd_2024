@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="7" failures="1" name="mx.unam.ciencias.edd.test.TestPila" time="0.055" errors="0" skipped="0">
+<testsuite tests="7" failures="1" name="mx.unam.ciencias.edd.test.TestPila" time="0.045" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.22+7"/>
@@ -64,8 +64,8 @@
   <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testMete" time="0"/>
   <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testMira" time="0"/>
   <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testSaca" time="0"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testToString" time="0.008"/>
-  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testEquals" time="0.043">
+  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testToString" time="0.001"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testEquals" time="0.042">
     <failure type="java.lang.AssertionError">java.lang.AssertionError
 	at org.junit.Assert.fail(Assert.java:87)
 	at org.junit.Assert.assertTrue(Assert.java:42)
@@ -86,5 +86,5 @@
 	at java.base/java.lang.Thread.run(Thread.java:829)
 </failure>
   </testcase>
-  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testConstructor" time="0.004"/>
+  <testcase classname="mx.unam.ciencias.edd.test.TestPila" name="testConstructor" time="0.002"/>
 </testsuite>

@@ -242,12 +242,11 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
             return vertice;
 
         VerticeArbolBinario<T> verticeIzquierdo = busca(elemento, vertice.izquierdo);
-        VerticeArbolBinario<T> verticeDerecho = busca(elemento, vertice.derecho);
 
         if (verticeIzquierdo != null)
             return verticeIzquierdo;
 
-        return verticeDerecho;
+        return busca(elemento, vertice.derecho);
     }
 
     /**
@@ -318,7 +317,7 @@ public abstract class ArbolBinario<T> implements Coleccion<T> {
     }
 
     private String toString(Vertice vertice, int nivel, boolean[] arreglo) {
-        String cadena = vertice.elemento.toString() + "\n";
+        String cadena = vertice.toString() + "\n";
         arreglo[nivel] = true;
 
         if (vertice.izquierdo != null && vertice.derecho != null) {

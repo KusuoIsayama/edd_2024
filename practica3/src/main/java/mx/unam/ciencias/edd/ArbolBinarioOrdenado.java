@@ -25,15 +25,11 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
 
         /* Inicializa al iterador. */
         public Iterador() {
-            pila = new Pila<Vertice>();
+            pila = new Pila<>();
             if (raiz == null)
                 return;
 
-            pila.mete(raiz);
-            Vertice vertice = raiz;
-
-            while ((vertice = vertice.izquierdo) != null)
-                pila.mete(vertice);
+            meteRamaIzquierda(raiz);
         }
 
         /* Nos dice si hay un elemento siguiente. */
@@ -45,15 +41,18 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
         @Override public T next() {
             Vertice vertice = pila.saca();
 
-            if (vertice.derecho != null) {
-                Vertice verticeAux = vertice.derecho;
-                pila.mete(verticeAux);
-
-                while ((verticeAux = verticeAux.izquierdo) != null)
-                    pila.mete(verticeAux);
-            }
+            if (vertice.derecho != null)
+                meteRamaIzquierda(vertice.derecho);
 
             return vertice.elemento;
+        }
+
+        private void meteRamaIzquierda(Vertice vertice) {
+            Vertice verticeAux = vertice;
+            pila.mete(verticeAux);
+
+            while ((verticeAux = verticeAux.izquierdo) != null)
+                pila.mete(verticeAux);
         }
     }
 
@@ -102,21 +101,18 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
     }
 
     private void agrega(Vertice verticeActual, Vertice nuevoVertice) {
-        if (nuevoVertice.elemento.compareTo(verticeActual.elemento) <= 0) {
+        if (nuevoVertice.elemento.compareTo(verticeActual.elemento) <= 0)
             if (verticeActual.izquierdo == null) {
                 verticeActual.izquierdo = nuevoVertice;
                 nuevoVertice.padre = verticeActual;
-            } else {
+            } else
                 agrega(verticeActual.izquierdo, nuevoVertice);
-            }
-        } else {
+        else
             if (verticeActual.derecho == null) {
                 verticeActual.derecho = nuevoVertice;
                 nuevoVertice.padre = verticeActual;
-            } else {
+            } else
                 agrega(verticeActual.derecho, nuevoVertice);
-            }
-        }
     }
 
     /**
@@ -336,10 +332,7 @@ public class ArbolBinarioOrdenado<T extends Comparable<T>>
     }
 
     private Vertice maximoEnSubarbol(Vertice vertice) {
-        if (vertice.derecho == null)
-            return vertice;
-
-        return maximoEnSubarbol(vertice.derecho);
+        return vertice.derecho == null ? vertice : maximoEnSubarbol(vertice.derecho);
     }
 
     /**
